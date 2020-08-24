@@ -33,7 +33,12 @@ so that the above `java` and `javac` commands will work from the command line.
     
 Browse to <http://localhost:8080/api/swagger-ui/> to see the API details.
 
-To view the database browse to <http://localhost:8080/api/h2-console/> and login as 'sa' with no password.
+To view the database browse to <http://localhost:8080/api/h2-console/> and login using these details:
+ 
+* Driver Class: `org.h2.Driver`
+* JDBC URL: `jdbc:h2:mem:testdb`
+* User Name: `sa`
+* Password: \<leave empty\>
 
 ### Building in an IDE
 

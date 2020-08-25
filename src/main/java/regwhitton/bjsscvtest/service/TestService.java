@@ -18,8 +18,8 @@ public class TestService {
 
     //private static final Logger LOG = LoggerFactory.getLogger(TestService.class);
 
-    @Transactional(rollbackFor = ServiceException.class)
-    public BigDecimal doubleIt(BigDecimal value) throws NotFoundException {
+    @Transactional
+    public BigDecimal doubleIt(BigDecimal value) {
         //LOG.debug("We are in tx " + TransactionSynchronizationManager.isActualTransactionActive());
         return value.multiply(BigDecimal.valueOf(2));
     }

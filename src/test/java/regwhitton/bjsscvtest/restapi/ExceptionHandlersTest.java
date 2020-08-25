@@ -38,25 +38,25 @@ public class ExceptionHandlersTest {
     private MockMvc mvc;
 
     @Test
-    public void shouldSendUnprocessableEntity_onValidationException() throws Exception {
+    public void shouldSendBadRequest_onValidationException() throws Exception {
         mvc.perform(
                 put("/entity/1")
                         .contentType(APPLICATION_JSON)
                         .content("{\"invalidIfNotBlank\":\"not blank\"}"))
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().json("{'error':'Invalid argument or field'}"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("{'error':'invalidIfNotBlank must match \"^$\"'}"));
     }
 
     @Test
     public void shouldSendNotFound_onNotFoundException() throws Exception {
-        exceptionThrowingController.setThrowable(new NotFoundException("Entity", 34L));
+        exceptionThrowingController.setThrowable(new NotFoundException());
 
         mvc.perform(
                 put("/entity/34")
                         .contentType(APPLICATION_JSON)
                         .content("{\"aField\":\"aValue\"}"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().json("{'error':'Entity 34 not found'}"));
+                .andExpect(content().json("{'error':'not found'}"));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class ExceptionHandlersTest {
     }
 
     @Test
-    public void shouldSendUnprocessableEntity_onDatabaseConstraintException() throws Exception {
+    public void shouldSendBadRequest_onDatabaseConstraintException() throws Exception {
         Set<ConstraintViolation<?>> violations = Sets.newLinkedHashSet(
                 mockConstraintViolation("must not be blank",
                         mockPathNode(ElementKind.BEAN, "entityService"),
@@ -103,7 +103,7 @@ public class ExceptionHandlersTest {
                 put("/entity/2")
                         .contentType(APPLICATION_JSON)
                         .content("{\"aField\":\"\"}"))
-                .andExpect(status().isUnprocessableEntity())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().json("{'error':'entity.aField must not be blank'}"));
     }
 

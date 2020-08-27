@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.test.context.ActiveProfiles;
 import regwhitton.bjsscvtest.model.Address;
 import regwhitton.bjsscvtest.model.Cv;
 
@@ -16,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @DataJpaTest
+@ActiveProfiles("test")
 @Import(CvService.class)
 class CvServiceTest {
 
@@ -28,9 +30,9 @@ class CvServiceTest {
     @Test()
     void should_createCvOnDatabase_andReturnCvWithId() {
         Cv originalCv = Cv.builder()
-                .firstName("Reginald")
-                .preferredFirstName("Reg")
-                .surname("Whitton")
+                .firstName("Sidney")
+                .preferredFirstName("Sid")
+                .surname("James")
                 .build();
 
         Cv createdCv = cvService.create(originalCv);
@@ -46,9 +48,9 @@ class CvServiceTest {
     @Test()
     void should_updateCvOnDatabase_andReturnCvWithNewVersion() {
         Cv cv = Cv.builder()
-                .firstName("Reginald")
-                .preferredFirstName("Reg")
-                .surname("Whitton")
+                .firstName("Sidney")
+                .preferredFirstName("Sid")
+                .surname("James")
                 .dateOfBirth(LocalDate.of(1983, 12, 31))
                 .build();
         Cv originalCv = entityManager.persistAndFlush(cv);
@@ -68,9 +70,9 @@ class CvServiceTest {
     @Test()
     void shouldFailToUpdate_ifVersionOutOfDate() {
         Cv cv = Cv.builder()
-                .firstName("Reginald")
-                .preferredFirstName("Reg")
-                .surname("Whitton")
+                .firstName("Sidney")
+                .preferredFirstName("Sid")
+                .surname("James")
                 .dateOfBirth(LocalDate.of(1983, 12, 31))
                 .build();
         Cv originalCv = entityManager.persistAndFlush(cv);
@@ -83,10 +85,10 @@ class CvServiceTest {
     @Test
     void shouldFetchACv() {
         Cv expectedCv = entityManager.persist(Cv.builder()
-                .firstName("Reginald")
-                .preferredFirstName("Reg")
-                .middleNames("Thomas John")
-                .surname("Whitton")
+                .firstName("Sidney")
+                .preferredFirstName("Sid")
+                .middleNames("Solomon Joel")
+                .surname("James")
                 .dateOfBirth(LocalDate.of(1983, 12, 31))
                 .address(Address.builder()
                         .addressLine1("3 Swing Back Lane")
@@ -107,10 +109,10 @@ class CvServiceTest {
     @Test
     void shouldFetchAllCvs() {
         Cv cv1 = entityManager.persist(Cv.builder()
-                .firstName("Reginald")
-                .preferredFirstName("Reg")
-                .middleNames("Thomas John")
-                .surname("Whitton")
+                .firstName("Sidney")
+                .preferredFirstName("Sid")
+                .middleNames("Solomon Joel")
+                .surname("James")
                 .dateOfBirth(LocalDate.of(1983, 12, 31))
                 .address(Address.builder()
                         .addressLine1("3 Swing Back Lane")

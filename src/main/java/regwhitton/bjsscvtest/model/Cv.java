@@ -53,7 +53,7 @@ public class Cv {
     String preferredFirstName;
 
     @Nullable
-    @Schema(example = "Fredrick Douglas")
+    @Schema(example = "Hugh")
     String middleNames;
 
     @NotBlank

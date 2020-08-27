@@ -31,7 +31,7 @@ public class CvController {
     @Autowired
     private CvService cvService;
 
-    @PostMapping(path = {"", "/"}, consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/", consumes = APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new CV")
     @ApiResponse(responseCode = "" + SC_CREATED, headers = @Header(name = LOCATION, description = "The URI of the created CV"))
     public ResponseEntity<Cv> createCv(@RequestBody Cv cv) {
@@ -56,7 +56,7 @@ public class CvController {
         return cvService.fetch(id);
     }
 
-    @GetMapping({"", "/"})
+    @GetMapping("/")
     @Operation(summary = "Fetch all CVs")
     @ResponseStatus(OK)
     public List<Cv> fetchAll() {

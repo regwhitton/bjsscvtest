@@ -5,23 +5,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
+import regwhitton.bjsscvtest.model.Address;
 import regwhitton.bjsscvtest.model.Cv;
 
 import javax.validation.ConstraintViolationException;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @WebMvcTest(CvService.class)
 @AutoConfigureMockMvc(addFilters = false, webClientEnabled = false, webDriverEnabled = false)
+@ActiveProfiles("test")
 class CvServiceValidationTest {
 
-    private final Cv cvWithoutIdAndVersion = Cv.builder()
-            .firstName("Reginald")
-            .preferredFirstName("Reg")
-            .surname("Whitton")
+    private final Address anAddress = Address.builder()
+            .addressLine1("34 Hilgard Road")
+            .postalCode("JK23 7YA")
             .build();
+
+    private final Cv cvWithoutIdAndVersion = Cv.builder()
+            .firstName("Sidney")
+            .preferredFirstName("Sid")
+            .middleNames("Solomon Joel")
+            .surname("James")
+            .dateOfBirth(LocalDate.of(1992, 2, 23))
+            .address(anAddress)
+            .build();
+
     @MockBean
     private CvRepository cvRepository;
+
     @Autowired
     private CvService cvService;
 
@@ -59,7 +73,14 @@ class CvServiceValidationTest {
 
     @Test
     void shouldVerifyDefaultValidation() {
-        Cv cvWithoutFirstName = Cv.builder().preferredFirstName("Reg").surname("Whitton").build();
+        Cv cvWithoutFirstName = Cv.builder()
+                .preferredFirstName("Sid")
+                .middleNames("Solomon Joel")
+                .surname("James")
+                .dateOfBirth(LocalDate.of(1992, 2, 23))
+                .address(anAddress)
+                .build();
+
         assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> cvService.create(cvWithoutFirstName))
                 .withMessageEndingWith("firstName: must not be blank");

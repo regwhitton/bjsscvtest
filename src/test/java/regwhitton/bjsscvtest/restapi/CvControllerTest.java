@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import regwhitton.bjsscvtest.model.Address;
 import regwhitton.bjsscvtest.model.Cv;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(CvController.class)
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class CvControllerTest {
 
     @MockBean
@@ -34,7 +36,7 @@ class CvControllerTest {
 
     @Test
     public void shouldCreateNewCv() throws Exception {
-        Cv cv = Cv.builder().firstName("Reginald").preferredFirstName("Reg").surname("Whitton").build();
+        Cv cv = Cv.builder().firstName("Sidney").preferredFirstName("Sid").surname("James").build();
         Cv createdCv = cv.toBuilder().id(123456789L).build();
         given(cvService.create(cv)).willReturn(createdCv);
 
@@ -42,11 +44,11 @@ class CvControllerTest {
                 post("/api/cv")
                         .contextPath("/api")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"firstName\":\"Reginald\", \"preferredFirstName\":\"Reg\", \"surname\":\"Whitton\"}"))
+                        .content("{\"firstName\":\"Sidney\", \"preferredFirstName\":\"Sid\", \"surname\":\"James\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "http://localhost/api/cv/123456789"))
                 .andExpect(content().json(
-                        "{'id':123456789, 'firstName':'Reginald', 'preferredFirstName':'Reg', 'surname':'Whitton'}"));
+                        "{'id':123456789, 'firstName':'Sidney', 'preferredFirstName':'Sid', 'surname':'James'}"));
     }
 
     @Test
@@ -54,9 +56,9 @@ class CvControllerTest {
         Cv expectedCv = Cv.builder()
                 .id(123456789L)
                 .version(100L)
-                .firstName("Reginald")
-                .preferredFirstName("Reg")
-                .surname("Whitton")
+                .firstName("Sidney")
+                .preferredFirstName("Sid")
+                .surname("James")
                 .build();
         Cv updatedCv = expectedCv.toBuilder().version(101L).build();
         given(cvService.update(expectedCv)).willReturn(updatedCv);
@@ -65,11 +67,11 @@ class CvControllerTest {
                 put("/api/cv/123456789")
                         .contextPath("/api")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\":-1, \"version\":100, \"firstName\":\"Reginald\"," +
-                                " \"preferredFirstName\":\"Reg\", \"surname\":\"Whitton\"}"))
+                        .content("{\"id\":-1, \"version\":100, \"firstName\":\"Sidney\"," +
+                                " \"preferredFirstName\":\"Sid\", \"surname\":\"James\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
-                        "{'id':123456789, 'version': 101, 'firstName':'Reginald', 'preferredFirstName':'Reg', 'surname':'Whitton'}"));
+                        "{'id':123456789, 'version': 101, 'firstName':'Sidney', 'preferredFirstName':'Sid', 'surname':'James'}"));
     }
 
     @Test
@@ -77,9 +79,9 @@ class CvControllerTest {
         Cv cv = Cv.builder()
                 .id(123456789L)
                 .version(100L)
-                .firstName("Reginald")
-                .preferredFirstName("Reg")
-                .surname("Whitton")
+                .firstName("Sidney")
+                .preferredFirstName("Sid")
+                .surname("James")
                 .build();
         given(cvService.fetch(123456789L)).willReturn(cv);
 
@@ -89,8 +91,8 @@ class CvControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
-                        "{'id':123456789, 'version': 100, 'firstName':'Reginald'," +
-                                " 'preferredFirstName':'Reg', 'surname':'Whitton'}"));
+                        "{'id':123456789, 'version': 100, 'firstName':'Sidney'," +
+                                " 'preferredFirstName':'Sid', 'surname':'James'}"));
     }
 
     @Test
@@ -99,10 +101,10 @@ class CvControllerTest {
                 Cv.builder()
                         .id(12345L)
                         .version(10L)
-                        .firstName("Reginald")
-                        .preferredFirstName("Reg")
-                        .middleNames("Thomas John")
-                        .surname("Whitton")
+                        .firstName("Sidney")
+                        .preferredFirstName("Sid")
+                        .middleNames("Solomon Joel")
+                        .surname("James")
                         .address(Address.builder()
                                 .addressLine1("3 Swing Back Lane")
                                 .addressLine2("Dimley")
@@ -140,10 +142,10 @@ class CvControllerTest {
                                 "  {\n" +
                                 "    'id': 12345,\n" +
                                 "    'version': 10,\n" +
-                                "    'firstName': 'Reginald',\n" +
-                                "    'preferredFirstName': 'Reg',\n" +
-                                "    'middleNames': 'Thomas John',\n" +
-                                "    'surname': 'Whitton',\n" +
+                                "    'firstName': 'Sidney',\n" +
+                                "    'preferredFirstName': 'Sid',\n" +
+                                "    'middleNames': 'Solomon Joel',\n" +
+                                "    'surname': 'James',\n" +
                                 "    'dateOfBirth': null,\n" +
                                 "    'email': null,\n" +
                                 "    'telephone': null,\n" +

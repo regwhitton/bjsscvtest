@@ -1,9 +1,5 @@
 package regwhitton.bjsscvtest.restapi;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +8,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
 /**
  * Test controller that throws the injected exception. Used by

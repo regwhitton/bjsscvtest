@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -102,6 +103,19 @@ public class ExceptionHandlers {
     public ErrorResponse handleException(MethodArgumentTypeMismatchException matme) {
         LOG.debug("Bad parameter: " + matme.getMessage());
         return new ErrorResponse("Cannot convert '" + matme.getName() + "' parameter from value '" + matme.getValue() + "'");
+    }
+
+    /**
+     * Handle exceptions from out-of-date entities (version number incorrect).
+     */
+    @ExceptionHandler
+    @ResponseStatus(BAD_REQUEST)
+    @ApiResponse(responseCode = "" + SC_BAD_REQUEST,
+            content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class),
+                    examples = @ExampleObject(value = "{\n\t\"error\": \"version number out-of-date\"\n}"))})
+    public ErrorResponse handleException(ObjectOptimisticLockingFailureException oolfe) {
+        LOG.debug("Stale object - version number out-of-date");
+        return new ErrorResponse("version number out-of-date");
     }
 
     /**

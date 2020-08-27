@@ -41,7 +41,7 @@ class CvControllerTest {
         given(cvService.create(cv)).willReturn(createdCv);
 
         mvc.perform(
-                post("/api/cv")
+                post("/api/cv/")
                         .contextPath("/api")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"firstName\":\"Sidney\", \"preferredFirstName\":\"Sid\", \"surname\":\"James\"}"))
@@ -133,7 +133,7 @@ class CvControllerTest {
         given(cvService.fetchAll()).willReturn(cvs);
 
         mvc.perform(
-                get("/api/cv")
+                get("/api/cv/")
                         .contextPath("/api")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

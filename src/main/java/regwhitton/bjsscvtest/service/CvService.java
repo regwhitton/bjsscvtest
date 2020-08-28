@@ -1,4 +1,4 @@
-package regwhitton.bjsscvtest.service.cv;
+package regwhitton.bjsscvtest.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +7,7 @@ import regwhitton.bjsscvtest.model.CreateValidation;
 import regwhitton.bjsscvtest.model.Cv;
 import regwhitton.bjsscvtest.model.UpdateValidation;
 import regwhitton.bjsscvtest.service.NotFoundException;
+import regwhitton.bjsscvtest.service.repo.CvRepository;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -33,8 +34,7 @@ public class CvService {
     }
 
     public Cv fetch(@NotNull Long id) throws NotFoundException {
-        return cvRepository.findById(id)
-                .orElseThrow(NotFoundException::new);
+        return cvRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     public List<Cv> fetchAll() {

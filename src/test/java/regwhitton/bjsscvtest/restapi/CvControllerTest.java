@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import regwhitton.bjsscvtest.model.Address;
 import regwhitton.bjsscvtest.model.Cv;
-import regwhitton.bjsscvtest.service.cv.CvService;
+import regwhitton.bjsscvtest.service.CvService;
 
 import java.util.List;
 
@@ -87,8 +87,7 @@ class CvControllerTest {
 
         mvc.perform(
                 get("/api/cv/123456789")
-                        .contextPath("/api")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contextPath("/api"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         "{'id':123456789, 'version': 100, 'firstName':'Sidney'," +
@@ -134,8 +133,7 @@ class CvControllerTest {
 
         mvc.perform(
                 get("/api/cv/")
-                        .contextPath("/api")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contextPath("/api"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         "[\n" +

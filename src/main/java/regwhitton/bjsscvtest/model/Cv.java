@@ -1,24 +1,36 @@
 package regwhitton.bjsscvtest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Singular;
+import org.springframework.data.domain.Page;
 import org.springframework.lang.Nullable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Version;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
 
 /**
  * Represents a Curriculum Vitae
@@ -60,6 +72,10 @@ public class Cv {
     @Schema(example = "Bloggs")
     String surname;
 
+    @NotBlank
+    @Schema(example = "Sanitation Engineer")
+    String summary;
+
     @NotNull
     LocalDate dateOfBirth;
 
@@ -73,4 +89,25 @@ public class Cv {
 
     @Embedded
     Address address;
+
+    @OneToMany(mappedBy = "cv", fetch = LAZY, cascade = ALL)
+    @Schema(hidden = true)
+    @JsonIgnore
+    @NotNull
+    @Builder.Default
+    private List<Skill> skills = new ArrayList<>();
+
+    @OneToMany(mappedBy = "cv", fetch = LAZY, cascade = ALL)
+    @Schema(hidden = true)
+    @JsonIgnore
+    @NotNull
+    @Builder.Default
+    private List<Employment> employmentHistory = new ArrayList<>();
+
+    @OneToMany(mappedBy = "cv", fetch = LAZY, cascade = ALL)
+    @Schema(hidden = true)
+    @JsonIgnore
+    @NotNull
+    @Builder.Default
+    private List<Education> education = new ArrayList<>();
 }

@@ -87,6 +87,9 @@ public class ExceptionHandlers {
      */
     @ExceptionHandler
     @ResponseStatus(BAD_REQUEST)
+    @ApiResponse(responseCode = "" + SC_BAD_REQUEST,
+            content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class),
+                    examples = @ExampleObject(value = "{\n\t\"error\": \"Bad incoming request - please check your JSON\"\n}"))})
     public ErrorResponse handleException(HttpMessageConversionException hmce) {
         LOG.debug("Bad incoming request: " + hmce.getMessage());
         return new ErrorResponse("Bad incoming request - please check your JSON");
@@ -97,9 +100,6 @@ public class ExceptionHandlers {
      */
     @ExceptionHandler
     @ResponseStatus(BAD_REQUEST)
-    @ApiResponse(responseCode = "" + SC_BAD_REQUEST,
-            content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class),
-                    examples = @ExampleObject(value = "{\n\t\"error\": \"Cannot convert 'id' parameter from value 'XXXX'\"\n}"))})
     public ErrorResponse handleException(MethodArgumentTypeMismatchException matme) {
         LOG.debug("Bad parameter: " + matme.getMessage());
         return new ErrorResponse("Cannot convert '" + matme.getName() + "' parameter from value '" + matme.getValue() + "'");
@@ -110,9 +110,6 @@ public class ExceptionHandlers {
      */
     @ExceptionHandler
     @ResponseStatus(BAD_REQUEST)
-    @ApiResponse(responseCode = "" + SC_BAD_REQUEST,
-            content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class),
-                    examples = @ExampleObject(value = "{\n\t\"error\": \"version number out-of-date\"\n}"))})
     public ErrorResponse handleException(ObjectOptimisticLockingFailureException oolfe) {
         LOG.debug("Stale object - version number out-of-date");
         return new ErrorResponse("version number out-of-date");

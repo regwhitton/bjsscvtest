@@ -16,13 +16,13 @@ public class UriUtils {
      * {@link URI} is returned to "/&lt;context&gt;/entity/16".
      * </p>
      *
-     * @param path string that starts with "/" and includes "{id}".
-     * @param id   to be placed in the path where "{id}" is found.
+     * @param path              string that starts with "/" and includes variable references such as "{id}".
+     * @param uriVariableValues to be placed in the path where the references are found.
      */
-    static public URI newResourceUri(String path, Object id) {
+    static public URI newResourceUri(String path, Object... uriVariableValues) {
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(path)
-                .buildAndExpand(id)
+                .buildAndExpand(uriVariableValues)
                 .toUriString();
         return URI.create(uri);
     }

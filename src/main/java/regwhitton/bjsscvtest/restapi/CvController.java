@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import regwhitton.bjsscvtest.model.Cv;
-import regwhitton.bjsscvtest.service.cv.CvService;
+import regwhitton.bjsscvtest.service.CvService;
 
 import java.util.List;
 

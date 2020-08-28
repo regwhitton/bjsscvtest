@@ -1,4 +1,4 @@
-package regwhitton.bjsscvtest.service.cv;
+package regwhitton.bjsscvtest.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +8,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import regwhitton.bjsscvtest.model.Address;
 import regwhitton.bjsscvtest.model.Cv;
+import regwhitton.bjsscvtest.service.CvService;
+import regwhitton.bjsscvtest.service.repo.CvRepository;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
@@ -30,6 +32,7 @@ class CvServiceValidationTest {
             .middleNames("Solomon Joel")
             .surname("James")
             .dateOfBirth(LocalDate.of(1992, 2, 23))
+            .summary("Professional Actor")
             .address(anAddress)
             .build();
 
@@ -78,6 +81,7 @@ class CvServiceValidationTest {
                 .middleNames("Solomon Joel")
                 .surname("James")
                 .dateOfBirth(LocalDate.of(1992, 2, 23))
+                .summary("Professional Actor")
                 .address(anAddress)
                 .build();
 

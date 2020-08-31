@@ -28,7 +28,7 @@ class CvServiceTest {
     CvService cvService;
 
     @Test()
-    void should_createCvOnDatabase_andReturnCvWithId() {
+    void shouldCreateCvOnDatabase_andReturnCvWithId() {
         Cv originalCv = Cv.builder()
                 .firstName("Sidney")
                 .preferredFirstName("Sid")
@@ -58,7 +58,7 @@ class CvServiceTest {
     }
 
     @Test()
-    void should_updateCvOnDatabase_andReturnCvWithNewVersion() {
+    void shouldUpdateCvOnDatabase_andReturnCvWithNewVersion() {
         Cv cv = Cv.builder()
                 .firstName("Sidney")
                 .preferredFirstName("Sid")

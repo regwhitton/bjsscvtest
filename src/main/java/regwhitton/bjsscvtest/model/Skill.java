@@ -8,9 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 import static javax.persistence.FetchType.LAZY;
@@ -46,7 +45,7 @@ public class Skill {
     Cv cv;
 
     @NotBlank
-    @Length(max = 50)
+    @Size(max = 50)
     @Schema(example = "Postgres SQL")
     String skill;
 
@@ -56,6 +55,6 @@ public class Skill {
     @Schema(accessMode = READ_ONLY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Long getCvId() {
-        return cv.getId();
+        return cv == null ? null : cv.getId();
     }
 }

@@ -35,6 +35,7 @@ public class CvController {
     @Operation(summary = "Create a new CV")
     @ApiResponse(responseCode = "" + SC_CREATED, headers = @Header(name = LOCATION, description = "The URI of the created CV"))
     public ResponseEntity<Cv> createCv(@RequestBody Cv cv) {
+        cv.setVersion(null);
         Cv createdCv = cvService.create(cv);
         return ResponseEntity
                 .created(newResourceUri("/cv/{id}", createdCv.getId()))

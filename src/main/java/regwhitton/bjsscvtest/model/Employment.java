@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.Entity;
@@ -16,9 +15,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Version;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
@@ -43,7 +45,8 @@ public class Employment {
     Long id;
 
     @Version
-    @Null(groups = CreateValidation.class)
+    @Min(value = 0, message = "should not be provided", groups = CreateValidation.class)
+    @Max(value = 0, message = "should not be provided", groups = CreateValidation.class)
     @NotNull(groups = UpdateValidation.class)
     @Schema(nullable = true,
             description = "Must not be provided on create. On update must provide the value previously read.")
@@ -61,17 +64,17 @@ public class Employment {
     LocalDate untilDate;
 
     @NotBlank
-    @Length(max = 50)
+    @Size(max = 50)
     @Schema(example = "Manufabaru Plc")
     String company;
 
     @NotBlank
-    @Length(max = 50)
+    @Size(max = 50)
     @Schema(example = "Creative Designer")
     String position;
 
     @NotBlank
-    @Length(max = 5000)
+    @Size(max = 5000)
     @Schema(example = "Responsible for designing and creating designs and other graphical stuff.")
     String summary;
 
@@ -81,7 +84,7 @@ public class Employment {
     @Schema(accessMode = READ_ONLY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Long getCvId() {
-        return cv.getId();
+        return cv == null ? null : cv.getId();
     }
 
 }

@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import regwhitton.bjsscvtest.model.Skill;
-import regwhitton.bjsscvtest.service.SkillService;
+import regwhitton.bjsscvtest.model.Employment;
+import regwhitton.bjsscvtest.service.EmploymentService;
 
 import java.util.List;
 
@@ -26,33 +27,41 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static regwhitton.bjsscvtest.restapi.UriUtils.newResourceUri;
 
 @RestController()
-@RequestMapping(path = "/cv/{cvId}/skill")
-public class SkillController {
+@RequestMapping(path = "/cv/{cvId}/employment")
+public class EmploymentController {
 
     @Autowired
-    private SkillService skillService;
+    private EmploymentService employmentService;
 
     @PostMapping(path = "/", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    @Operation(summary = "Add a new skill to a CV")
-    @ApiResponse(responseCode = "" + SC_CREATED, headers = @Header(name = LOCATION, description = "The URI of the created skill"))
-    public ResponseEntity<Skill> create(@PathVariable Long cvId, @RequestBody Skill skill) {
-        Skill createdSkill = skillService.create(cvId, skill);
+    @Operation(summary = "Add an employment to a CV")
+    @ApiResponse(responseCode = "" + SC_CREATED, headers = @Header(name = LOCATION, description = "The URI of the created employment"))
+    public ResponseEntity<Employment> add(@PathVariable Long cvId, @RequestBody Employment employment) {
+        Employment createdEmployment = employmentService.create(cvId, employment);
         return ResponseEntity
-                .created(newResourceUri("/cv/{cvId}/skill/{id}", cvId, createdSkill.getId()))
-                .body(createdSkill);
+                .created(newResourceUri("/cv/{cvId}/employment/{id}", cvId, createdEmployment.getId()))
+                .body(createdEmployment);
+    }
+
+    @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE)
+    @Operation(summary = "Update an employment")
+    @ResponseStatus(OK)
+    public Employment update(@PathVariable Long cvId, @PathVariable Long id, @RequestBody Employment employment) {
+        employment.setId(id);
+        return employmentService.update(cvId, employment);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a skill from a CV")
+    @Operation(summary = "Delete an employment from a CV")
     @ResponseStatus(NO_CONTENT)
     public void delete(@PathVariable Long cvId, @PathVariable Long id) {
-        skillService.delete(cvId, id);
+        employmentService.delete(cvId, id);
     }
 
     @GetMapping(path = "/", produces = APPLICATION_JSON_VALUE)
-    @Operation(summary = "Fetch all skills on a CV")
+    @Operation(summary = "Fetch all employments on a CV")
     @ResponseStatus(OK)
-    public List<Skill> fetchAll(@PathVariable Long cvId) {
-        return skillService.fetchAll(cvId);
+    public List<Employment> fetchAll(@PathVariable Long cvId) {
+        return employmentService.fetchAll(cvId);
     }
 }

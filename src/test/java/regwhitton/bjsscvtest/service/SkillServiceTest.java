@@ -46,11 +46,11 @@ class SkillServiceTest {
         entityManager.flush();
 
         assertThat(createdSkill.getId()).isNotNull();
-        assertThat(createdSkill.getCv()).isEqualTo(cv);
+        assertThat(createdSkill.getCvId()).isEqualTo(cv.getId());
         assertThat(createdSkill.getSkill()).isEqualTo("Navigation Certificate");
 
         Skill dbSkill = entityManager.find(Skill.class, createdSkill.getId());
-        assertThat(dbSkill.getCv()).isEqualTo(cv);
+        assertThat(dbSkill.getCvId()).isEqualTo(cv.getId());
         assertThat(dbSkill.getSkill()).isEqualTo("Navigation Certificate");
     }
 
@@ -59,6 +59,7 @@ class SkillServiceTest {
         final Long UNKNOWN_CV_ID = 123456789L;
         Cv cv = entityManager.persist(buildCv());
         Skill skill = entityManager.persist(buildSkill(cv, "Baker"));
+        entityManager.flush();
 
         assertThatExceptionOfType(NotFoundException.class)
                 .isThrownBy(() -> skillService.delete(UNKNOWN_CV_ID, skill.getId()));

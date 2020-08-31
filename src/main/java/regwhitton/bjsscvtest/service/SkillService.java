@@ -31,7 +31,6 @@ public class SkillService {
     public Skill create(Long cvId, @Valid Skill skill) throws NotFoundException {
         Cv cv = cvRepository.findById(cvId)
                 .orElseThrow(NotFoundException::new);
-        cv.getSkills().add(skill);
         skill.setCv(cv);
         return skillRepository.save(skill);
     }

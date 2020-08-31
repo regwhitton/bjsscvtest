@@ -8,7 +8,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import regwhitton.bjsscvtest.model.Address;
 import regwhitton.bjsscvtest.model.Cv;
-import regwhitton.bjsscvtest.service.CvService;
 import regwhitton.bjsscvtest.service.repo.CvRepository;
 
 import javax.validation.ConstraintViolationException;
@@ -20,6 +19,12 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @AutoConfigureMockMvc(addFilters = false, webClientEnabled = false, webDriverEnabled = false)
 @ActiveProfiles("test")
 class CvServiceValidationTest {
+
+    @MockBean
+    private CvRepository cvRepository;
+
+    @Autowired
+    private CvService cvService;
 
     private final Address anAddress = Address.builder()
             .addressLine1("34 Hilgard Road")
@@ -36,12 +41,6 @@ class CvServiceValidationTest {
             .address(anAddress)
             .build();
 
-    @MockBean
-    private CvRepository cvRepository;
-
-    @Autowired
-    private CvService cvService;
-
     @Test
     void shouldVerifyCvToCreateHasNoId() {
         Cv cvWithId = cvWithoutIdAndVersion.toBuilder().id(123456789L).build();
@@ -55,7 +54,7 @@ class CvServiceValidationTest {
         Cv cvWithVersion = cvWithoutIdAndVersion.toBuilder().version(1L).build();
         assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> cvService.create(cvWithVersion))
-                .withMessageEndingWith("version: must be null");
+                .withMessageEndingWith("version: should not be provided");
     }
 
     @Test

@@ -20,9 +20,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +53,8 @@ public class Cv {
     Long id;
 
     @Version
-    @Null(groups = CreateValidation.class)
+    @Min(value = 0, message = "should not be provided", groups = CreateValidation.class)
+    @Max(value = 0, message = "should not be provided", groups = CreateValidation.class)
     @NotNull(groups = UpdateValidation.class)
     @Schema(nullable = true,
             description = "Must not be provided on create. On update must provide the value previously read.")
@@ -84,6 +88,7 @@ public class Cv {
     String email;
 
     @Nullable
+    @Size(max = 50)
     @Schema(example = "01999 999999")
     String telephone;
 
@@ -103,11 +108,4 @@ public class Cv {
     @NotNull
     @Builder.Default
     private List<Employment> employmentHistory = new ArrayList<>();
-
-    @OneToMany(mappedBy = "cv", fetch = LAZY, cascade = ALL)
-    @Schema(hidden = true)
-    @JsonIgnore
-    @NotNull
-    @Builder.Default
-    private List<Education> education = new ArrayList<>();
 }

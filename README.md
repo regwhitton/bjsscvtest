@@ -55,6 +55,8 @@ select the installation instructions for your IDE from the "Install" menu.
 ### Assumptions made about the task
 
 * The system allows a single user to manipulate multiple CVs, rather than multiple users manipulate just their own CV.
+* That multiple users may edit the same CV, so that updates need to done within transactions and optimistic locking should be used.
+* That soft deletes are not required.
 
 ### Productionisation 
 

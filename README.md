@@ -32,7 +32,6 @@ so that the above `java` and `javac` commands will work from the command line.
     mvnw spring-boot:run    (Use Control-C or task-manager to stop)
     
 Browse to <http://localhost:8080/api/swagger-ui.html> to see the API details.
-The in-memory H2 database has been populated with some demonstration data.
 
 To view the database browse to <http://localhost:8080/api/h2-console/> and login using these details:
  
@@ -49,8 +48,7 @@ select the installation instructions for your IDE from the "Install" menu.
 
 ## Notes on Implementation
 
-* For demonstration purposes an in-memory database has been used.
-* Spring Data enables database transactions by default.
+For demonstration purposes the application uses an in-memory database and is populated with some fake data.
 
 ### Assumptions made about the task
 
